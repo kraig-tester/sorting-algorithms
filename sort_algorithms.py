@@ -1,4 +1,5 @@
-'''This module contains sorting function, which are currently working with INT and FLOAT list types.'''
+'''This module contains sorting functions, which are currently working with INT, FLOAT and STR list types.
+By default, if a function has no data type identification, it is working with numbers.'''
 from random import randint
 
 
