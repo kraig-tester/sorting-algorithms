@@ -7,19 +7,23 @@ def create_random_int_array(size, min_value=0, max_value=1000):
     '''Creating array to sort with random integer values.
     By default, it fills in values in a range from 0 to 1000, 
     however you can change these by inputting min_value and max_value parameters.'''
-    return [randint(min_value,max_value) for _ in range(0, size-1)]
+    return [randint(min_value,max_value) for _ in range(0, size)]
 
 
-def create_random_str_array(size):
-    '''Creating array to sort with random str values.'''
-    return [chr(randint(0,256)) for _ in range(0, size-1)]
+def create_random_str_array(size, lat_only=True):
+    '''Creating array to sort with random str values.
+    By default, function only uses lowercase english letters.
+    Set lat_only parameter to False to use all 256 symbols.'''
+    if not lat_only:
+        return [chr(randint(0,255)) for _ in range(0, size)]
+    return [chr(randint(97,122)) for _ in range(0, size)]
 
 
-def print_arr(arr, type, time_p):   
+def print_arr(arr, type, time_p=0):   
     '''Representation of an array'''
     str_arr = f"{type}: "
     if len(arr) < 15:
-        return arr
+        str_arr += f'{str(arr)}\n'
     else:
         str_arr += "["
         for num in arr[:3]:
@@ -211,16 +215,13 @@ def counting_sort_str(arr):
     count = [0] * 256
     for i in arr:
         count[ord(i)] += 1 # ord(i) returns number of symbol in unicode
-
-    # Change count[i] so that count[i] now contains actual
-    # position of this character in output array
-    for i in range(256):
-        count[i] += count[i-1]
-
-    # Build the output character array
+    
     output = [0] * len(arr)
-    for i in range(len(arr)-1, -1, -1):
-        output[count[ord(arr[i])]-1] = arr[i]
-        count[ord(arr[i])] -= 1
+    
+    pos = 0
+    for i in range(256):
+        for _ in range(count[i]):
+            output[pos] = chr(i) # chr(i) return letter for a corresponding code
+            pos += 1
 
     return output
